@@ -7,7 +7,7 @@ console.log("iniciando instrumentations.ts");
 
 //comentar depois de executar uma vez, ele serve apenas pra criar o usuário. Deve-se comentar pra ele não dar erro
 
-//The collections were created with success!
+// //The collections were created with success!
 // (async () => {
 //     try {
 //       // Aqui é onde entra o await!
