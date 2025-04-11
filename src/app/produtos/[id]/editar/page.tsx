@@ -46,24 +46,27 @@
 
 import { atualizarProduto } from '@/app/lib/actions'
 import Produto from '@/app/db/models/produto'
+import mongoose from '@/app/db/mongodb'
 import { ObjectId } from 'mongodb'; // Importar ObjectId
 
 export default async function Pagina({ params }: any) {
-    const { _id } = await params
+    const { _id } = params
+
+    const produto = await Produto.findById(_id);
 
     // Garantir que o id seja convertido para ObjectId
-    const objectId = ObjectId.createFromTime(_id); 
+    // const objectId = ObjectId.createFromTime(id); 
 
-    const produto = await Produto.findById(objectId);
+    // const produto = await Produto.findById(objectId);
 
-    if (!produto) {
-        // Trate o caso de produto não encontrado, se necessário
-        return <p>Produto não encontrado</p>;
-    }
+    // if (!produto) {
+    //     // Trate o caso de produto não encontrado, se necessário
+    //     return <p>Produto não encontrado</p>;
+    // }
 
     return (
         <>
-          <div className="top-bar">s
+          <div className="top-bar">
               <div className="logo"><a href="/">Electronic's Place</a></div>
               <div className="user-area">
                   <a  href="/carrinho">
@@ -74,18 +77,18 @@ export default async function Pagina({ params }: any) {
                   </a>
               </div>
           </div>
-            <h1>Atualizar produto</h1>
+             <h1>Atualizar produto</h1> {/*não terminei ver oq o chat escreveu q eu n vi ainda */}
 
             <form action={atualizarProduto}>
                 <input type='hidden' name='id' value={_id} />
                 <div>
-                    <label htmlFor='nome'>Nome do produto</label>
+                    <label htmlFor='name'>Nome do produto</label>
                     <input
-                        id='nome'
-                        name='nome'
+                        id='name'
+                        name='name'
                         type='text'
-                        defaultValue={produto.name} //Cannot read properties of null(reading "name") Provavelmente pq eu n tenho um banco de dados em casa ainda
-                        autoFocus={true}
+                        defaultValue={produto.name}
+                        // autoFocus={true}
                     />
 
                     <label htmlFor='valor'>Valor do produto</label>

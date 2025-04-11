@@ -124,6 +124,13 @@ export default function Home() {
       }
     }
   }
+  const removerProduto = async (_id: number | string) => {
+    await axios.delete(`http://localhost:3000/api/v1/produtos/${_id}`)
+    carregarDados()
+    redirect('/produtos') // Redireciona para a página de produtos após a remoção
+  }
+
+  
 
   useEffect(() => {
     carregarDados() // Carrega os dados ao montar o componente
@@ -158,7 +165,7 @@ export default function Home() {
       {loading && <p>Carregando produtos...</p>}
       {error && <p>{error}</p>} */}
 
-      {/* <table>
+      <table>
         <tbody className="lista">
           {produtos.map((p: ProdutoType, index) =>
             <tr key={p._id || index}>
@@ -173,9 +180,8 @@ export default function Home() {
             </tr>
           )}
         </tbody>
-      </table> */}
-{/* dilema: a imagem quando pesquisa n aparece ou o contrário */}
-        <div className="produto-central">
+      </table> 
+        {/* <div className="produto-central">
           <p>Produtos cadastrados:</p>
           {produtos.map((p: ProdutoType, index) => (
              <div key={p._id || index} className="produto-card">
@@ -188,7 +194,7 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
       <div className="bottom-bar">
         <div className="espaço">

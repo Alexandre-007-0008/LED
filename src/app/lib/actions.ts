@@ -6,9 +6,11 @@ import { redirect } from "next/navigation"
 
 export async function cadastrarProduto(data: FormData) {
     const produto: ProdutoType = {
-        nome: data.get('nome')?.toString() || '',
+        name: String(data.get('name')),
         valor: Number(data.get('valor')?.toString()) || 0,
-        estoque: Number(data.get('estoque')?.toString()) || 0,
+        qtde: Number(data.get('qtde')?.toString()) || 0,
+        _id: "",
+        id: ""
     } 
 
     const p = await Produto.create(produto)
@@ -21,9 +23,9 @@ export async function atualizarProduto(data: FormData) {
     const p = await Produto.findOneAndUpdate(
         {_id: data.get('id')},
         {
-            nome: data.get('nome')?.toString() || '',
+            nome: data.get('name')?.toString() || '',
             valor: Number(data.get('valor')?.toString()) || 0,
-            estoque: Number(data.get('estoque')?.toString()) || 0,
+            qtde: Number(data.get('qtde')?.toString()) || 0,
         }
     )
 

@@ -36,10 +36,10 @@
 import mongoose from '@/app/db/mongodb'
 
 const ProdutoSchema = new mongoose.Schema({
-    // id: { type: String, required: true},
+    id: { type: String, required: false},
     name: { type: String, required: true, index: true },
     valor: { type: Number, required: false },
-    // qtde: { type: Number, required: false },
+    qtde: { type: Number, required: false },
     // img: { type: String },
     // imageId: { type: Number }
   },

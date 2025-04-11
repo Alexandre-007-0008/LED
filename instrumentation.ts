@@ -29,7 +29,8 @@ console.log("iniciando instrumentations.ts");
 //         console.log("Criando produto exemplo");
 //         await Produto.create({
 //           name: "Produto Exemplo",
-//           valor: 99.99
+//           valor: 99.99,
+//           id: 1
 //         });
 //       }
   

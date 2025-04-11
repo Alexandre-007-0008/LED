@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log("📢 Recebendo no backend:", body); // <-- Log para verificar os dados
 
-    const { name, valor } = body;
+    const { name, valor, id } = body;
 
     if (!name || valor == null) {
       return new Response(
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const produto = new Produto({ name, valor });
+    const produto = new Produto({ name, valor, id });
     await produto.save();
 
     console.log("✅ Produto salvo no banco:", produto);
@@ -53,6 +53,39 @@ export async function POST(req: Request) {
     );
   }
 }
+// export async function PUT(req: Request) {
+//   try {
+//     const body = await req.json();
+//     const { id, name, valor } = body;
+
+//     const index = Produto.findIndex((p) => p.id === id);
+//     if (index === -1) {
+//       return Response.json({ erro: "Produto não encontrado" }, { status: 404 });
+//     }
+
+//     Produto[index] = { id, name, valor }; // Atualiza os dados
+//     return Response.json(Produto[index]);
+//   } catch (error) {
+//     return Response.json({ erro: "Erro ao atualizar o produto" }, { status: 400 });
+//   }
+// }
+
+// Função DELETE - Remove um produto pelo ID
+// export async function DELETE(req: Request) {
+//   try {
+//     const { id } = await req.json();
+
+//     const index = Produto.findIndex((p) => p.id === id);
+//     if (index === -1) {
+//       return Response.json({ erro: "Produto não encontrado" }, { status: 404 });
+//     }
+
+//     Produto.splice(index, 1); // Remove o produto
+//     return Response.json({ mensagem: "Produto removido com sucesso" });
+//   } catch (error) {
+//     return Response.json({ erro: "Erro ao remover o produto" }, { status: 400 });
+//   }
+// }
 
 
 
@@ -85,22 +118,6 @@ export async function POST(req: Request) {
 // }
 
 // // Função PUT - Atualiza um produto existente
-// export async function PUT(req: Request) {
-//   try {
-//     const body = await req.json();
-//     const { id, name, valor } = body;
-
-//     const index = PRODUTOS.findIndex((p) => p.id === id);
-//     if (index === -1) {
-//       return Response.json({ erro: "Produto não encontrado" }, { status: 404 });
-//     }
-
-//     PRODUTOS[index] = { id, name, valor }; // Atualiza os dados
-//     return Response.json(PRODUTOS[index]);
-//   } catch (error) {
-//     return Response.json({ erro: "Erro ao atualizar o produto" }, { status: 400 });
-//   }
-// }
 
 // // Função DELETE - Remove um produto pelo ID
 // export async function DELETE(req: Request) {
