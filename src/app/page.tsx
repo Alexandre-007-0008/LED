@@ -127,7 +127,7 @@ export default function Home() {
   const removerProduto = async (_id: number | string) => {
     await axios.delete(`http://localhost:3000/api/v1/produtos/${_id}`)
     carregarDados()
-    redirect('/produtos') // Redireciona para a página de produtos após a remoção
+    redirect('/') // Redireciona para a página de produtos após a remoção
   }
 
   

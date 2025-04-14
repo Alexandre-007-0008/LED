@@ -25,4 +25,49 @@ export async function GET(
   }
 }
 
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  const id = context.params.id;
+
+  try {
+    await produtoController.excluirProduto(id);
+
+    return NextResponse.json(
+      { mensagem: 'Produto removido com sucesso' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erro ao remover produto:', error);
+    return NextResponse.json(
+      { erro: 'Erro ao remover produto' },
+      { status: 500 }
+    );
+  }
+}
+
+
+// export async function DELETE(
+//   request: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     await produtoController.excluirProduto(params.id);
+
+//     return NextResponse.json(
+//       { mensagem: 'Produto removido com sucesso' },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error('Erro ao remover produto:', error);
+//     return NextResponse.json(
+//       { erro: 'Erro ao remover produto' },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+
 // Implementações para PUT, DELETE, etc.

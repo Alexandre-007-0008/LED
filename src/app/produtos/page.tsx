@@ -161,6 +161,7 @@ import { ProdutoType } from '../types';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+
 export default function Dashboard() {
   const [qtde, setQtde] = useState<number>(0);
   const [produtos, setProdutos] = useState<ProdutoType[]>([]);

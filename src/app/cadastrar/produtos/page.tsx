@@ -4,6 +4,7 @@ import { FormEvent } from "react";
 import axios from "axios";
 import Produto from "@/app/db/models/produto";
 import { ProdutoType } from "@/app/types";
+import { redirect } from "next/navigation";
 
 export default function Pagina() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -22,8 +23,8 @@ export default function Pagina() {
       const response = await axios.post("/api/v1/produtos", { name, valor });
       alert("Produto cadastrado com sucesso!");
       console.log("✅ Resposta do backend:", response.data);
-
-      // event.currentTarget.reset(); // Limpa o formulário
+      redirect('/');
+    
    
   }
 // placeholder="Valor (R$)"
@@ -37,7 +38,7 @@ export default function Pagina() {
           <label htmlFor="name">Nome do Produto</label>
           <input type="text" 
           name="name" 
-          placeholder="Nome do Produto" 
+          placeholder="" 
           className="form-control"
           required />
         </div>
@@ -48,7 +49,19 @@ export default function Pagina() {
             type="number"
             name="valor"
             id="valor"
-            placeholder="Valor (R$)"
+            placeholder=""
+            className="form-control"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="valor">Quantidade do Produto</label>
+          <input
+            type="number"
+            name="qtde"
+            id="qtde"
+            placeholder=""
             className="form-control"
             required
           />

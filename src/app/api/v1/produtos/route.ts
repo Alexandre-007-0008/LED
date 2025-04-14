@@ -53,6 +53,51 @@ export async function POST(req: Request) {
     );
   }
 }
+
+
+
+// DELETE - Remover produto por ID
+export async function DELETE(request: Request) {
+  await connectDB();
+
+  try {
+    const { id } = await request.json();
+
+    if (!id) {
+      return new Response(JSON.stringify({ error: "ID não fornecido" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    const deleted = await Produto.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return new Response(JSON.stringify({ error: "Produto não encontrado" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    return new Response(JSON.stringify({ message: "Produto removido com sucesso" }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    console.error("❌ Erro ao remover produto:", error);
+    return new Response(JSON.stringify({ error: "Erro ao remover produto" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+
+
+
+
+
+
+
 // export async function PUT(req: Request) {
 //   try {
 //     const body = await req.json();
@@ -75,8 +120,8 @@ export async function POST(req: Request) {
 //   try {
 //     const { id } = await req.json();
 
-//     const index = Produto.findIndex((p) => p.id === id);
-//     if (index === -1) {
+//     const index = Produto.findById((p: { id: any; }) => p.id === id);
+//     if (await index === -1) {
 //       return Response.json({ erro: "Produto não encontrado" }, { status: 404 });
 //     }
 
