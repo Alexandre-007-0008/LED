@@ -5,8 +5,8 @@ import Produto from '@/app/db/models/produto'
 import {redirect} from 'next/navigation'
 import { FormEvent } from 'react'
 export default async function Pagina({ params }: any) {
-    const { _id } = await params
-    const produto = await Produto.findById(_id)
+    const { id } = await params
+    const produto = await Produto.findById(id)
 
      async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -35,7 +35,7 @@ export default async function Pagina({ params }: any) {
                 <h2 className="text-center">Atualizar Produto</h2>
 
                 <form action={atualizarProduto} className="form-container">
-                <input type='hidden' name='id' value={_id}/>
+                <input type='hidden' name='id' value={id}/>
                     <div className="form-group">
                     <label htmlFor="name">Nome do Produto</label>
                     <input type="text" 
@@ -58,10 +58,10 @@ export default async function Pagina({ params }: any) {
                     </div>
 
                     <div className="form-group">
-                    <label htmlFor='estoque'>Estoque do produto</label>
+                    <label htmlFor='qtde'>Estoque do produto</label>
                     <input
-                        id='estoque'
-                        name='estoque'
+                        id='qtde'
+                        name='qtde'
                         type='number'
                         placeholder="" //tirei pq tava redundante (tava o msm do label)
                         className="form-control"

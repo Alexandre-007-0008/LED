@@ -160,38 +160,71 @@ import axios from 'axios';
 import { ProdutoType } from '../types';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-
+import "../globals.css"
 
 export default function Dashboard() {
   const [qtde, setQtde] = useState<number>(0);
-  const [produtos, setProdutos] = useState<ProdutoType[]>([]);
+  const [produtos, setProdutos] = useState<ProdutoType[]>([])
+  const [searchQuery, setSearchQuery] = useState<string>('') // Estado para armazenar a pesquisa
+  const [loading, setLoading] = useState<boolean>(false) // Estado para controlar o carregamento
+  const [error, setError] = useState<string>('') // Estado para armazenar erros
 
+  // const carregarDados = async () => {
+  //   // Carregar dados de produtos da API
+  //   axios.get<ProdutoType[]>('http://localhost:3000/api/v1/produtos')
+  //     .then((resp) => {
+  //       setProdutos(resp.data);  // Atualiza os produtos com os dados da API
+  //     });
+
+  //   // Carregar quantidade de produtos da API
+  //   axios.get<{ total: number }[]>('http://localhost:3000/api/v1/relatorios/quantidade')
+  //     .then((resp) => {
+  //       setQtde(resp.data[0] ? resp.data[0].total : 0);  // Atualiza a quantidade
+  //     });
+    // Função para carregar os dados dos produtos e quantidade total
   const carregarDados = async () => {
-    // Carregar dados de produtos da API
-    axios.get<ProdutoType[]>('http://localhost:3000/api/v1/produtos')
-      .then((resp) => {
-        setProdutos(resp.data);  // Atualiza os produtos com os dados da API
-      });
+    setLoading(true) // Define como carregando antes de fazer a requisição
+    try {
+      const responseProdutos = await axios.get<ProdutoType[]>('http://localhost:3000/api/v1/produtos')
+      setProdutos(responseProdutos.data)
 
-    // Carregar quantidade de produtos da API
-    axios.get<{ total: number }[]>('http://localhost:3000/api/v1/relatorios/quantidade')
-      .then((resp) => {
-        setQtde(resp.data[0] ? resp.data[0].total : 0);  // Atualiza a quantidade
-      });
+      const responseQuantidade = await axios.get<{ total: number }[]>('http://localhost:3000/api/v1/relatorios/quantidade')
+      setQtde(responseQuantidade.data[0] ? responseQuantidade.data[0].total : 0)
 
-    // Essa linha abaixo pode ser redundante, mas caso precise:
-    // axios.get<ProdutoType[]>('http://localhost:3000/api/v1/produtos')
-    //   .then((resp) => setProdutos(resp.data));
+    } catch (err) {
+      setError('Erro ao carregar os produtos') // Se algo der errado
+    } finally {
+      setLoading(false) // Finaliza o carregamento
+    }
+  }
 
-    // axios.get<{ total: number }[]>('http://localhost:3000/api/v1/relatorios/quantidade')
-    //   .then((resp) => {
-    //     setQtde(resp.data[0] ? resp.data[0].total : 0);
-    //   });
-  };
+
+
+    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.target.value
+        setSearchQuery(query) // Atualiza o estado de pesquisa
+    
+        if (query.trim() === '') {
+          carregarDados() // Se a pesquisa estiver vazia, carrega todos os produtos
+        } else {
+          try {
+            setLoading(true)
+            const response = await axios.get<ProdutoType[]>(`http://localhost:3000/api/v1/produtos/search?name=${query}`)
+            setProdutos(response.data) // Atualiza os produtos com o filtro
+          } catch (err) {
+            setError('Erro ao buscar produtos') // Se algo der errado
+          } finally {
+            setLoading(false)
+          }
+        }
+      }
+  
 
   useEffect(() => {
-    carregarDados(); // Carregar os dados quando o componente for montado
-  }, []);
+    carregarDados() // Carrega os dados ao montar o componente
+  }, [])
+
+  
 
   return (
     <>
@@ -208,7 +241,12 @@ export default function Dashboard() {
       </div>
       <div className="container">
         <div className="search-container">
-          <input type="text" placeholder="Pesquisar..." />
+          <input 
+            type="text" 
+            placeholder="Pesquisar..."
+            value={searchQuery}
+            onChange={handleSearch} 
+          />
         </div>
         <Link href="/cadastrar/produtos">Cadastrar Produto</Link>
         <div className="produto-central">

@@ -13,14 +13,15 @@ export default function Pagina() {
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name") as string;
     const valor = Number(formData.get("valor"));
+    const qtde = Number(formData.get("qtde"));
 
-    if (!name || isNaN(valor) || valor <= 0) {
+    if (!name || isNaN(valor) || valor <= 0 || qtde <= 0) {
       alert("Preencha todos os campos corretamente");
       return;
     }
 
    
-      const response = await axios.post("/api/v1/produtos", { name, valor });
+      const response = await axios.post("/api/v1/produtos", { name, valor, qtde });
       alert("Produto cadastrado com sucesso!");
       console.log("✅ Resposta do backend:", response.data);
       redirect('/');

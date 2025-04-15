@@ -25,6 +25,59 @@ export async function GET(
   }
 }
 
+export async function POST(request: NextRequest) {
+  try {
+    const dados = await request.json();
+
+    // Validação básica (opcional, mas recomendado)
+    if (!dados.name || typeof dados.valor !== 'number' || typeof dados.qtde !== 'number') {
+      return NextResponse.json(
+        { erro: 'Dados inválidos. Certifique-se de enviar name, valor e qtde corretamente.' },
+        { status: 400 }
+      );
+    }
+
+    const novoProduto = await produtoController.criarProduto(dados);
+
+    return NextResponse.json({ produto: novoProduto }, { status: 201 });
+  } catch (error) {
+    console.error('Erro ao cadastrar produto:', error);
+    return NextResponse.json(
+      { erro: 'Erro ao cadastrar produto' },
+      { status: 500 }
+    );
+  }
+}
+
+
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  
+  try {
+    const dadosAtualizados = await request.json();
+    
+    const produtoAtualizado = await produtoController.atualizarProduto(id, dadosAtualizados);
+    
+    if (!produtoAtualizado) {
+      return NextResponse.json(
+        { erro: 'Produto não encontrado ou não pôde ser atualizado' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({ produto: produtoAtualizado }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao atualizar produto:', error);
+    return NextResponse.json(
+      { erro: 'Erro ao atualizar produto' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function DELETE(
   request: NextRequest,
@@ -47,6 +100,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 // export async function DELETE(

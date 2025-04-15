@@ -23,21 +23,23 @@ export async function cadastrarProduto(data: FormData) {
 // PUT - Atualizar produto
 export async function atualizarProduto(data: FormData) {
     const id = data.get('id')?.toString()
-    
+    if (!id) throw new Error("ID do produto não fornecido")
 
     const produtoAtualizado = await Produto.findByIdAndUpdate(
         id,
         {
-            name: data.get('name')?.toString() || '',
-            valor: Number(data.get('valor')) || 0,
-            qtde: Number(data.get('qtde')) || 0,
+            name: String(data.get('name')),
+            valor: Number(data.get('valor')),
+            qtde: Number(data.get('qtde')),
         },
         { new: true } // retorna o documento atualizado
     )
 
     if (!produtoAtualizado) throw new Error("Produto não encontrado")
-
-    redirect(`/produtos/${produtoAtualizado.id}`)
+    else (
+        console.log("Produto cadastrado:", produtoAtualizado)
+)   
+    redirect('/')
 }
 
 // DELETE - Remover produto
@@ -46,7 +48,7 @@ export async function removerProduto(id: string) {
 
     await Produto.findByIdAndDelete(id)
 
-    redirect('/produtos')
+    redirect('/')
 }
 
 

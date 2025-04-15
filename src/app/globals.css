@@ -470,7 +470,7 @@ button {
 /* Estilo do nome do produto */
 .produto-nome {
   font-size: 16px;
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-top: 10px;
 }
 

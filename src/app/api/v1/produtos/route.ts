@@ -27,16 +27,16 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log("📢 Recebendo no backend:", body); // <-- Log para verificar os dados
 
-    const { name, valor, id } = body;
+    const { name, valor, qtde, id } = body;
 
-    if (!name || valor == null) {
+    if (!name || valor == null || qtde == null) {
       return new Response(
         JSON.stringify({ error: "Nome e valor são obrigatórios" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    const produto = new Produto({ name, valor, id });
+    const produto = new Produto({ name, valor, qtde, id });
     await produto.save();
 
     console.log("✅ Produto salvo no banco:", produto);
@@ -71,7 +71,7 @@ export async function DELETE(request: Request) {
     }
 
     const deleted = await Produto.findByIdAndDelete(id);
-
+    console.log("Produto excluído com sucesso");
     if (!deleted) {
       return new Response(JSON.stringify({ error: "Produto não encontrado" }), {
         status: 404,
